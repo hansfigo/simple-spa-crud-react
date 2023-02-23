@@ -1,14 +1,18 @@
 import { useState } from 'react'
 import './App.css'
+import { CSSTransition } from 'react-transition-group';
 import UserProfilePage from './pages/UserProfilePage/UserProfilePage'
 
 function App() {
 
   const [page, setPage] = useState(0);
+  const [isTransition, setTransition] = useState(false);
 
   const handlePage = (index: number) => {
-    console.log(index);
-    setPage(index);
+    setTransition(true);
+    setTimeout(() => {
+      setPage(index);
+    },300)
   }
 
   const styles = {
@@ -22,14 +26,30 @@ function App() {
         <div className='w-full max-w-7xl min-w-max flex items-center justify-between '>
           <div className='text-3xl'>Navbar</div>
           <div className='flex'>
-            <p onClick={()=>handlePage(0)} className={styles.navbarText}>Home</p>
-            <p onClick={()=>handlePage(1)} className={styles.navbarText}>Form</p>
+            <p onClick={() => handlePage(0)} className={styles.navbarText}>Home</p>
+            <p onClick={() => handlePage(1)} className={styles.navbarText}>Form</p>
           </div>
         </div>
       </div>
       <div className='mt-44'>
-     {page === 0 && <p>HomePage</p>}
-     {page === 1 && <UserProfilePage/>}
+        <CSSTransition
+          in={page === 0}
+          classNames="fade"
+          timeout={300}
+        >
+          <div className='fade'>
+            {page === 0 && <p>HomePage</p>}
+          </div>
+        </CSSTransition>
+        <CSSTransition
+          in={page === 1}
+          classNames="fade"
+          timeout={300}
+        >
+          <div className='fade'>
+            {page === 1 && <UserProfilePage/>}
+          </div>
+        </CSSTransition>
       </div>
     </div>
 
